@@ -1,4 +1,8 @@
 class TweetsController < ApplicationController
+    #追加箇所
+    before_action :authenticate_user!
+    #ここまで
+    
     def index
         # 追加場所ここから
         @tweets = Tweet.all
@@ -14,6 +18,11 @@ class TweetsController < ApplicationController
     #追加箇所
     def create
         tweet = Tweet.new(tweet_params)
+
+        #追加箇所
+        tweet.user_id = current_user.id
+        #ここまで
+
         if tweet.save
             redirect_to :action => "index"
         else

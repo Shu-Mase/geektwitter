@@ -1,10 +1,15 @@
 <%= stylesheet_link_tag 'index', :media => "all" %>
-
+<%= button_to 'ログアウト', destroy_user_session_path, method: :delete %>
 <div class="tweets-container">
 <h3>Tweet一覧</h3>
   <% @tweets.each do |t| %>
     <div class="tweet">
-      <div class="main-box">
+
+        <%# 追加箇所 %>
+        <%= t.user.email %>
+        <%# ここまで %>
+
+        <div class="main-box">
         <div class="left-container"><%= t.body %></div>
         <div class="right-container">
           <%= link_to "詳細", tweet_path(t.id) %>
