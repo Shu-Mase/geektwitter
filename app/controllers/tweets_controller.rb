@@ -4,9 +4,14 @@ class TweetsController < ApplicationController
     #ここまで
     
     def index
-        # 追加場所ここから
-        @tweets = Tweet.all
-        # ここまで
+        if params[:search] == nil
+            @tweets= Tweet.all.page(params[:page]).per(3)
+        elsif params[:search] == ''
+            @tweets= Tweet.all.page(params[:page]).per(3)
+        else
+            #部分検索
+            @tweets = Tweet.where("body LIKE ? ",'%' + params[:search] + '%').page(params[:page]).per(3)
+        end
     end
 
     # 追加場所ここから
@@ -33,6 +38,9 @@ class TweetsController < ApplicationController
     # 追記ここから
     def show
         @tweet = Tweet.find(params[:id])
+        
+        @comments = @tweet.comments
+        @comment = Comment.new
     end
     # ここまで
 
@@ -63,7 +71,7 @@ class TweetsController < ApplicationController
     
     private
     def tweet_params
-        params.require(:tweet).permit(:body)
+        params.require(:tweet).permit(:body, :image)
     end
     #ここまで
 end
